@@ -1,0 +1,129 @@
+Microsoft Windows [Version 10.0.26200.8037]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Windows\System32>openssl genrsa -out rootCA.key 2048
+
+C:\Windows\System32>openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 3650 -out rootCA.crt
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:VN
+State or Province Name (full name) [Some-State]:Ho Chi Minh
+Locality Name (eg, city) []:Quan 7
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Ton Duc Thang University
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:My Root CA
+Email Address []:
+
+C:\Windows\System32>openssl genrsa -out server.key 2048
+
+C:\Windows\System32>openssl req -new -key server.key -out server.csr
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:VN
+State or Province Name (full name) [Some-State]:Ho Chi Minh
+Locality Name (eg, city) []:Quan 7
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Ton Duc Thang University
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:localhost
+Email Address []:
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:123456789
+An optional company name []:
+
+C:\Windows\System32>D:
+
+D:\>cd "D:\OpenSSL-Win64\bin"
+
+D:\OpenSSL-Win64\bin>dir
+ Volume in drive D is New Volume
+ Volume Serial Number is 0A74-BAB0
+
+ Directory of D:\OpenSSL-Win64\bin
+
+04/08/2026  10:35 PM    <DIR>          .
+04/08/2026  10:35 PM    <DIR>          ..
+01/28/2026  08:48 AM            13,781 CA.pl
+01/28/2026  08:48 AM            72,192 capi.dll
+01/28/2026  08:48 AM            49,664 dasync.dll
+01/28/2026  08:48 AM           187,904 legacy.dll
+01/28/2026  08:48 AM         7,313,920 libcrypto-3-x64.dll
+01/28/2026  08:48 AM         1,317,888 libssl-3-x64.dll
+01/28/2026  08:48 AM            85,504 loader_attic.dll
+01/28/2026  08:48 AM           820,736 openssl.exe
+01/28/2026  08:48 AM            52,224 ossltest.dll
+01/28/2026  08:48 AM            66,048 padlock.dll
+04/08/2026  10:05 PM    <DIR>          PEM
+01/28/2026  08:48 AM             7,699 progs.pl
+01/28/2026  08:48 AM            32,768 p_minimal.dll
+01/28/2026  08:48 AM            38,912 p_test.dll
+01/28/2026  08:48 AM             6,946 tsget.pl
+04/08/2026  10:31 PM               171 v3.ext
+              15 File(s)     10,066,357 bytes
+               3 Dir(s)  247,099,113,472 bytes free
+
+D:\OpenSSL-Win64\bin>mkdir D:\pki_project
+
+D:\OpenSSL-Win64\bin>move C:\Windows\System32\rootCA.* D:\pki_project
+C:\Windows\System32\rootCA.crt
+C:\Windows\System32\rootCA.key
+        2 file(s) moved.
+
+D:\OpenSSL-Win64\bin>move C:\Windows\System32\server.* D:\pki_project
+C:\Windows\System32\server.csr
+C:\Windows\System32\server.key
+        2 file(s) moved.
+
+D:\OpenSSL-Win64\bin>move D:\OpenSSL-Win64\bin\v3.ext D:\pki_project
+        1 file(s) moved.
+
+D:\OpenSSL-Win64\bin>cd D:\pki_project
+
+D:\pki_project>dir
+ Volume in drive D is New Volume
+ Volume Serial Number is 0A74-BAB0
+
+ Directory of D:\pki_project
+
+04/08/2026  10:44 PM    <DIR>          .
+04/08/2026  10:32 PM             1,372 rootCA.crt
+04/08/2026  10:32 PM             1,732 rootCA.key
+04/08/2026  10:33 PM             1,062 server.csr
+04/08/2026  10:32 PM             1,732 server.key
+04/08/2026  10:31 PM               171 v3.ext
+               5 File(s)          6,069 bytes
+               1 Dir(s)  247,099,097,088 bytes free
+
+D:\pki_project>openssl x509 -req -in server.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out server.crt -days 365 -sha256 -extfile v3.ext
+Certificate request self-signature ok
+subject=C=VN, ST=Ho Chi Minh, L=Quan 7, O=Ton Duc Thang University, CN=localhost
+
+D:\pki_project>dir
+ Volume in drive D is New Volume
+ Volume Serial Number is 0A74-BAB0
+
+ Directory of D:\pki_project
+
+04/08/2026  10:44 PM    <DIR>          .
+04/08/2026  10:32 PM             1,372 rootCA.crt
+04/08/2026  10:32 PM             1,732 rootCA.key
+04/08/2026  10:44 PM                42 rootCA.srl
+04/08/2026  10:44 PM             1,414 server.crt
+04/08/2026  10:33 PM             1,062 server.csr
+04/08/2026  10:32 PM             1,732 server.key
+04/08/2026  10:31 PM               171 v3.ext
+               7 File(s)          7,525 bytes
+               1 Dir(s)  247,099,088,896 bytes free
+
+D:\pki_project>
