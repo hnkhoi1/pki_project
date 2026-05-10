@@ -1,0 +1,18 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 1;
+}
+
+.glass-panel {
+    background: rgba(5, 20, 36, 0.5);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mesh-gradient {
+    background: radial-gradient(circle at 20% 30%, rgba(0, 219, 233, 0.15), transparent),
+                radial-gradient(circle at 80% 70%, rgba(138, 92, 245, 0.15), transparent);
+}
